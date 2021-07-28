@@ -5,7 +5,7 @@ This is a simple script for markup to double check the glossary entries in our T
 ## Requirements:
 You'll need to install [Python 3 or higher](https://www.python.org/downloads/) to run the script. I have not yet tested if there are any issues for Mac users. On Windows, once Python is installed you only need to double click the .py script to run it.
 
-To download the script simply download the repository folder: Go to "Code" and select "Download ZIP". Then unzip the downloaded file.
+To download the script simply click on the green "Code" button above and select "Download ZIP". Then unzip the downloaded file.
 
 ## Running the script:
 To run the script. You will need to place a copy of the TEI file into the "Glossary Checker" folder. Then rename the file to "input.xml". This will tell the script to read and check this file's glossary. The script reads the Tibetan Unicode, so the TEI file will need to first be minimally processed in terms of having 1) the glossary added, 2) Wylie terms separated into there own tags if they are separated by commas or semicolons, and 3) the Tibetan Unicode automatically generated after the file is saved to the database.
