@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <title>Kangyur Image Test v3</title>
+    <script src="showimage.js"></script>
+</head>
+
+<body>
+
+    <input id="volume" name="volume" type="number" min="1" max="103" placeholder="vol." />
+
+    <input id="page" name="page" placeholder="page (i.e. 1a)" />
+
+    <input id="bttn" type="submit" onclick="printimage()">
+
+    <script>
+        var input = document.getElementById("page");
+        input.addEventListener("keyup", function (event) {
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.getElementById("bttn").click();
+            }
+        });
+
+        function getPageInfo(pageStr) {
+            var letter = 'a';
+            var indexLetter = pageStr.indexOf('a');
+            if (indexLetter == -1) {
+                indexLetter = pageStr.indexOf('b');
+                letter = 'b';
+            }
+            if (indexLetter == -1)
+                return null;
+            var numbers = pageStr.substring(0, indexLetter);
+            var imageNum = 2 * parseInt(numbers) + 1;
+            if (letter == 'b')
+                imageNum += 1;
+            return imageNum;
+        }
+
+        function pad(n, width, z) {
+            z = z || '0';
+            n = n + '';
+            return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+        }
+
+        function getVolInfo(volStr) {
+		    var adjust = -62
+			if (parseInt(volStr) > 13)
+				adjust = 13
+			if (parseInt(volStr) > 28)
+				adjust = 2
+			if (parseInt(volStr) > 32)
+				adjust = 17
+			if (parseInt(volStr) > 33)
+				adjust = -42
+			if (parseInt(volStr) > 34)
+				adjust = 12
+			if (parseInt(volStr) > 38)
+				adjust = 22
+			if (parseInt(volStr) > 44)
+				adjust = 14
+			if (parseInt(volStr) > 76)
+				adjust = 0
+			if (parseInt(volStr) > 96)
+				adjust = -4
+			if (parseInt(volStr) > 99)
+				adjust = 3
+            volId4C = 'bdr:V4CZ5369_I1KG9'.concat(parseInt(volStr) + 126);
+            volId22 = 'bdr:V22084_I0'.concat(parseInt(volStr) + 885);
+            volId30 = 'bdr:V30532_I6'.concat(parseInt(volStr) + 347);
+			volId3C = 'bdr:V3CN20612_I3CN20'.concat(parseInt(volStr) + (613 - adjust));
+            return [volId4C, volId22, volId30, volId3C];
+        }
+
+        function getImageName(volume, imageNum) {
+            res = [];
+            var volInt = parseInt(volume);
+            var paddedImageNum = pad('' + imageNum, 4, '0');
+			var adjust = 1;
+			if (volume == '1')
+				adjust = 0;
+			if (volume == '6')
+				adjust = 0;
+			if (volume == '14')
+				adjust = 2;
+			if (volume == '15')
+				adjust = 2;
+			if (volume == '16')
+				adjust = 2;
+			if (volume == '17')
+				adjust = 2;
+			if (volume == '18')
+				adjust = 2;
+			if (volume == '19')
+				adjust = 2;
+			if (volume == '20')
+				adjust = 3;
+			if (volume == '21')
+				adjust = 2;
+			if (volume == '22')
+				adjust = 2;
+			if (volume == '23')
+				adjust = 2;
+			if (volume == '24')
+				adjust = 2;
+			if (volume == '58')
+				adjust = 0;
+			if (volume == '75')
+				adjust = 0;
+			if (volume == '86')
+				adjust = 0;
+			if (volume == '91')
+				adjust = 2;
+			if (volume == '100')
+				adjust = 0;
+			if (volume == '101')
+				adjust = 0;
+			if (volume == '102')
+				adjust = 0;
+            var paddedImageNumB = pad('' + (imageNum + adjust), 4, '0');
+            var volNum = volInt + 126;
+            res[0] = 'I1KG9' + volNum + paddedImageNumB + '.jpg';
+            volNum = volInt + 885;
+            res[1] = '0' + volNum + paddedImageNum + '.tif';
+            volNum = volInt + 347;
+            res[2] = '6' + volNum + paddedImageNum + '.tif';
+			var adjustV = -62
+			if (volInt > 13)
+				adjustV = 13
+			if (volInt > 28)
+				adjustV = 2
+			if (volInt > 32)
+				adjustV = 17
+			if (volInt > 33)
+				adjustV = -42
+			if (volInt > 34)
+				adjustV = 12
+			if (volInt > 38)
+				adjustV = 22
+			if (volInt > 44)
+				adjustV = 14
+			if (volInt > 76)
+				adjustV = 0
+			if (volInt > 96)
+				adjustV = -4
+			if (volInt > 99)
+				adjustV = 3
+			volNum = volInt + (613 - adjustV);
+			res[3] = 'I3CN20' + volNum + paddedImageNum + '.jpg';
+            return res;
+        }
+
+        function adarshaUrl(volume, page) {
+			volumeAdjust = volume
+			if (volume == '100')
+				volumeAdjust = 101
+			if (volume == '101')
+				volumeAdjust = 102
+			if (volume == '102')
+				volumeAdjust = 100
+            // adarsha url: https://files.dharma-treasure.org/degekangyur/degekangyur1-1/1-1-1b.jpg
+            return "https://files.dharma-treasure.org/degekangyur/degekangyur"+volumeAdjust+"-1/"+volumeAdjust+"-1-"+page+".jpg"
+        }
+
+        function printimage() {
+            var volume = document.getElementById('volume').value;
+            var page = document.getElementById('page').value;
+            var imageNum = getPageInfo(page);
+            if (imageNum == null) {
+                return;
+            }
+            var volIds = getVolInfo(volume);
+            var imageNames = getImageName(volume, imageNum);
+            for (var i = 0; i < 4; i++) {
+                var imageUrl = 'http://iiif.bdrc.io/' + volIds[i] + '::' + imageNames[i] + '/full/full/0/default.jpg';
+                document.getElementById('theimage' + (i + 1)).src = imageUrl;
+            }
+            document.getElementById('theimage5').src = adarshaUrl(volume, page);
+        }
+    </script>
+
+    <!-- <img id="theimage1"; style='height: 100%; width: 100%; object-fit: contain'/>
+    <img id="theimage2"; style='height: 100%; width: 100%; object-fit: contain'/>
+    <img id="theimage3"; style='height: 100%; width: 100%; object-fit: contain'/> -->
+
+	<h1>Degé W4CZ5369 (from Library of Congress) -- late post par phud</h1>
+	<p>This text is the basis for the eKangyur. (This image will occasionally be off-alignment, so you may need to adjust a page or two.)</p>
+    <img id="theimage1"/>
+	<h1>Degé W30532 (printed from the library of Situ Rinpoche) -- late post par phud</h1>
+    <img id="theimage3"/>
+	<h1>Degé (adarsha.dharma-treasure.org) -- seems to be post par phud</h1>
+	<p>Note, volumes 100-102 have been reordered to align with the other scans.</p>
+    <img id="theimage5"/>
+	<h1>Degé W3CN20612 (Tsalparma)-- early post par-phud (1762?)</h1>
+	<p>Note that the original volume order in W3CN20612 does not follow the order of the other editions. This script has reordered this volume to match the others. This early version doesn't have the extra texts in Vol. 81, 83, and 88 that were added to the late post par phud editions.</p>
+	<img id="theimage4"/>
+	<h1>Degé W22084 (printed by 16th Karmapa) -- facsimile par phud (1733)</h1>
+	<p>"par phud" recension is NOT the basis for eKangyur but it may be helpful for comparison. It also isn’t used as a main source because it was retouched with marker pens before printing in Delhi.</p>
+    <img id="theimage2"/>
+</body>
+
+</html>
