@@ -9,11 +9,12 @@ def listToString(s):
 
 with open('input.xml', 'r', encoding='utf-8-sig') as input_to_check:
     in_check = input_to_check.readlines()
-    terms = []
-    for line in in_check:
-        if '<term xml:lang="bo">' in line:
-            term = re.sub(r'.*<term xml:lang="bo">(.+)</term>.*', r'\1', line)
-            terms.append(term)
+    ready_check = listToString(in_check)
+    terms = re.findall(r'<term xml:lang="bo"\s*>(.+)</term>', ready_check)
+#    for lines in ready_check:
+#        if '<term xml:lang="bo">' in line:
+#            term = re.sub(r'.*<term xml:lang="bo">(.+)</term>.*', r'\1', line)
+#            terms.append(term)
 
 # re.sub(r'<tei:milestone xml:id="UT22084-\d+-\d+-\d+"/>', '', tm)
 
