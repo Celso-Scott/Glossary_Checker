@@ -14,7 +14,7 @@ with open('input.xml', 'r', encoding='utf-8-sig') as input_to_check:
     ready_check = re.sub(r'status="verified"', r'', ready_check)
     ready_check = re.sub(r'type="[^"]+"', r'', ready_check)
 #   gather the Tibetan Unicode strings
-    terms = re.findall(r'<term\s* xml:lang="bo"\s*>(.+)</term>', ready_check)
+    terms = re.findall(r'<term\s* xml:lang="bo"[^>]+>(.+)</term>', ready_check)
 #    for lines in ready_check:
 #        if '<term xml:lang="bo">' in line:
 #            term = re.sub(r'.*<term xml:lang="bo">(.+)</term>.*', r'\1', line)
