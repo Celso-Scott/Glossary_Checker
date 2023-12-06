@@ -17,3 +17,5 @@ Then simply, double click the "check_glossary.py" script to run it. If it is set
 You will need to investigate why that is. Sometimes there is a legit reason the term isn't in the source: perhaps an alternate Kangyur edition was used and indicated by a note; sometimes there is a ། between the syllables; or a suitable ommission/inclusion of a case particle; I'll leave it up to you to investigate what is fine and what needs to be corrected.
 
 Beware that often there are input errors in the eKangyur. If you suspect there is one use the "dege_kangyur_scan_checker-v3" included in this folder to check the scans. If you find that it is an input error rather than an error in the glossary, please report the error [here](https://docs.google.com/spreadsheets/d/1Wdsygc_EI8GUNl3_-4Z50q_D0FChWS1hFPj9oIpaT18/edit?usp=sharing), and I will correct it when I get a chance. 
+
+Test update.
